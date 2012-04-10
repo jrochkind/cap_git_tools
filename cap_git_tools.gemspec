@@ -8,8 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Jonathan Rochkind"]
   s.email       = ["jonathan@dnil.net"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{re-usable, composable Capistrano tasks for git tagging and other work with a git repo}
 
   s.rubyforge_project = "cap_git_tools"
 
