@@ -26,7 +26,7 @@ module CapGitTools::TaskHelpers
     # execute locally as a shell command, echo'ing to output, as
     # well as capturing error and aborting. 
     def local_sh(cmd)
-      say_formatted("local execute: #{cmd}")
+      say_formatted("executing locally: #{cmd}")
       `#{cmd}`
       abort("failed: #{cmd}") unless $? == 0
     end
