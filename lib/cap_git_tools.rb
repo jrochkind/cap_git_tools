@@ -1,5 +1,5 @@
 require "cap_git_tools/version"
 
 module CapGitTools
-  # Your code goes here...
+  # We don't really do anything by default on gem load. 
 end

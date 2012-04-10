@@ -2,6 +2,7 @@
 #
 # generally this module is 'include'd into a cap
 # :namespace, seems to do what we want. 
+require 'cap_git_tools'
 
 module CapGitTools::TaskHelpers
    ####
