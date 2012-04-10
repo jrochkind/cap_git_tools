@@ -75,7 +75,7 @@ Capistrano::Configuration.instance.load do
     end
   
     desc <<-DESC
-      Make sure local repo has been pushed to upstream, or abort cap
+      Ensure sure local git has been pushed to upstream, or abort
      
       * Assumes upstream remote is 'origin', or set :upstream_remote
       * Looks in :branch (default 'master') to see what branch should be checked,
@@ -85,7 +85,7 @@ Capistrano::Configuration.instance.load do
       See also git:guard_committed, you usually want to use both to ensure this. 
       
         before "git:tag", "git:check_committed", "git:check_upstream"
-      or
+      or if not using git:tag, eg
         before "deploy",  , "git:check_committed", "git:check_upstream"
 
       setting cap :skip_guard_upstream to truewill skip even if task is invoked.
@@ -157,28 +157,39 @@ Capistrano::Configuration.instance.load do
       set(:branch, tag)
     end
     
-    # takes an already existing tag, and retags it and deploys that tag.
-    #
-    # usually used in git multistage for moving from staging to production
-    #
-    # * by default, retags latest already existing tag beginning "staging-". 
-    #   * set :from_tag for exact tag (or other commit-ish thing) to re-tag
-    #     and deploy 
-    #   * set :from_prefix to instead lookup last tag with that prefix,
-    #     and re-tag and deploy that one.
-    # * by default, sets new tag using the same default rules at git:tag,
-    #   ie, set :tag, or will calculate using :tag_prefix, or current stage, or 
-    #   'deploy' + timestamp or tag_suffix template 
-    #
-    #  sets :branch to the new tag, so subsequent cap deploy tasks will use it
-    #
-    #  pushes new tag to 'origin' or cap :upstream_remote
+    desc <<-DESC
+      Takes an already existing tag, and retags it and deploys that tag.
+    
+        Will push the new tag to upstream repo, and set the new tag as cap 
+        :branch so cap willd deploy it.  
+    
+        Usually used in git multistage for moving from staging to production.
+        
+        `set :confirm_retag, true` in a config file to force an interactive
+        prompt and confirmation before continuing. 
+        
+        What tag will be used as source tag?
+        
+        * Normally the most recent tag beginning "staging-"
+        * Or set cap :tag_prefix in config file or command line
+          to use a different prefix.
+        * Or set :tag_from in config file or on command line
+          to specify a specific tag.
+          
+        What will the newly created tag look like? Same rules as for
+        git:tag. 
+        
+        * By default in a production stage it's going to look 
+        like `production-yyyy-mm-dd-hhmm`, but there are several
+        of cap variables you can set in a config file to change this,
+        including :tag_prefix and :tag_format.         
+    DESC
     task :retag do
       from_tag = self.from_tag
       
       to_tag = calculate_new_tag
       
-      self.guard_confirm_tag(from_tag)
+      self.guard_confirm_retag(from_tag)
       
       say_formatted("git:retag taking #{from_tag} and retagging as #{to_tag}")
       
@@ -206,27 +217,46 @@ Capistrano::Configuration.instance.load do
     
   
     desc <<-DESC
-    Show log between most tagged deploy and what will be deployed now. 
-    
-     less flexible than most of our other tasks, assumes certain workflow. 
-     if you're in multi-stage and stage :production, then commit log
-     between last production-* tag and last staging-* tag. 
-    
-     otherwise (for 'staging' or non-multistage) from current branch to
-     last staging tag. 
+     Show log between most tagged deploy and what would be deployed now.                
      
-     This gets confusing so abstract with all our config, may do odd
-     things with custom config, not sure.
+     Requires you to be using git:tag or git:retag to make any sense,
+     so we can find the 'last deployed' tag to compare. 
+     
+     You can run this manually:
+         cap git:commit_log
+     Or for multi-stage, perhaps:
+         cap staging git:commit_log
+         cap production git:commit_log
+     Or you can use cap callbacks to ensure this is shown before
+     a deploy, for multi-stage for instance add to your production.rb:
+        before "git:retag", "git:commit_log"
+        # and force an interactive confirmation after they've seen it
+        set :confirm_retag, true     
+     
+     Ordinarily shows commit log between current git working copy
+     (forced to current head of :branch if cap :branch is set), and
+     last deployed tag, by default tag beginning "deploy-", or
+     tag beginning :stage if you are cap multi-stage, or beginning
+     with :tag_prefix if that is set. 
+          
+     Hard-coded to do something special if you are using multistage
+     cap, and are in stage 'production' -- in that case it will
+     show you the commits between the most recent production-* tag,
+     and the most recent staging-* tag. (Cap :tag_prefix and :from_prefix
+     can change those tag prefixes).      
     DESC
     task :commit_log do
       from, to = nil, nil
       
       if exists?("stage") && stage.to_s == "production"
+        # production stage in multi-stage
         from =  from_tag # last staging-* tag, or last :from_prefix tag
         to = fetch_last_tag # last deploy-* tag, or last :tag_prefix tag
       else
+        # 'staging' stage in multi-stage, or else any old
+        # non-multistage. 
         from = fetch_last_tag # last deploy-* tag, or last :tag_prefix tag
-        to = local_sha.slice(0,8)
+        to = local_sha.slice(0,8) # current git working copy, or local branch head. 
       end
       
       show_commit_log(from, to)
