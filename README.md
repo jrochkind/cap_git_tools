@@ -93,13 +93,17 @@ In one commonly desired multistage workflow (similar to what
            set :confirm_tag, true
        
 Say you `cap staging deploy` on April 1 2012 at noon, your deploy will be
-tagged `staging-2012-04-01-1200`. Say on April 2 at noon, you run `cap
-production deploy` -- you'll be a shown a commit log of changes between the
-previous `production-` commit and your most recent `staging-` commit, 
-`staging-2012-04-01-1200`. You'll be asked to confirm, and then the deploy will
-happen, with new tag added `production-2012-04-02-1200` Note it's timestamped
-with date of production deploy).  The commit message for the `production-` tag
-will say which `staging-` tag was retagged. 
+tagged `staging-2012-04-01-1200`. 
+
+Say on April 2 at noon, you run `cap production deploy`
+* you'll be a shown a commit log of changes between the previous `production-` 
+commit and your most recent `staging-` commit, `staging-2012-04-01-1200`.
+(`git:commit_log`) 
+* You'll be asked to confirm, (`set :confirm_tag, true`) 
+* And then the deploy will happen, with new tag added `production-2012-04-02-1200` 
+  (`git:retag`). 
+  * Note it's timestamped with date of production deploy.  The commit message
+  for the `production-` tag will say which `staging-` tag was retagged. 
      
 The `git:retag` task has some configurable options (in your recipe or on the
 individual command line invocation) too, see `cap -e git:retag`. 
