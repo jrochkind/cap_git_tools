@@ -182,11 +182,8 @@ module CapGitTools::TaskHelpers
         prompt = "Do you really want to deploy "
         prompt += new_tag
         prompt += " to #{stage}" if exists? :stage
-        
-        confirmed = Capistrano::CLI.ui.agree(prompt) do |q|
-          q.default = "no"
-        end
-        unless confirmed
+                
+        unless Capistrano::CLI.ui.agree(prompt) 
           abort("exiting, user cancelled.")
         end
       end
