@@ -68,6 +68,10 @@ If you are using multistage, the default prefix will be the current stage name
 like "production" or "staging" (but see below for fancier multi-stage
 workflow). 
 
+Ordinarily what's in your current git checkout will be tagged; but if
+you have set cap's `:branch`, it'll tag the HEAD of that branch even if that's
+not your current checkout. 
+
 You can customize the prefix and other aspects of tagging, both in your recipe 
 and with command line over-rides, see `cap -E git:tag` for more info. 
 
