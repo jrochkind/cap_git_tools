@@ -96,6 +96,7 @@ Say you `cap staging deploy` on April 1 2012 at noon, your deploy will be
 tagged `staging-2012-04-01-1200`. 
 
 Say on April 2 at noon, you run `cap production deploy`
+
 * you'll be a shown a commit log of changes between the previous `production-` 
 commit and your most recent `staging-` commit, `staging-2012-04-01-1200`.
 (`git:commit_log`) 
