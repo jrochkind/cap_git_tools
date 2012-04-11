@@ -8,16 +8,15 @@ end
 
 require 'cap_git_tools/task_helpers'
 
-# yes, oddly this is the only way I can figure out to make
-# our task helper methods available to our task, without putting
-# em in this file literally. Yes, this means they'll be avail
-# to all tasks, not just ones in our namespace, sorry. 
-Capistrano::Configuration.send(:include, CapGitTools::TaskHelpers)
+
 
 Capistrano::Configuration.instance.load do  
 
     
   namespace :git do
+    # include our helper methods, I believe just into this namespace
+    # if we do it this way. 
+    extend CapGitTools::TaskHelpers
     
     desc <<-DESC
       Ensure git working copy has no uncommitted changes, or abort. 
