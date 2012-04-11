@@ -177,7 +177,7 @@ module CapGitTools::TaskHelpers
     # will prompt to confirm new tag, if :confirm_tag is true, otherwise
     # no-op. 
     def guard_confirm_tag(new_tag)    
-      if exists?("confirm_retag") && [true, "true"].include?(fetch("confirm_retag"))      
+      if exists?("confirm_tag") && [true, "true"].include?( confirm_tag )      
         confirmed = Capistrano::CLI.ui.agree("Do you really want to deploy #{new_tag}?") do |q|
           q.default = "no"
         end
