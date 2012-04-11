@@ -42,10 +42,10 @@ Capistrano::Configuration.instance.load do
         if exists?("branch")
           working_branch = `git symbolic-ref -q HEAD`.sub(%r{^refs/heads/}, '').chomp
           unless fetch("branch") == working_branch
-            abort %Q{failed: guard_clean: wrong branch
+            abort %Q{failed: guard_committed: wrong branch
     
-        You have configured to deploy from branch ::#{fetch("branch")}::
-        but your git working copy is on branch ::#{working_branch}::
+        You have configured to deploy from branch #{fetch("branch")}
+        but your git working copy is on branch #{working_branch}
     
             git checkout #{fetch("branch")}
     
@@ -62,7 +62,7 @@ Capistrano::Configuration.instance.load do
         if return_code == 0
           say_formatted("guard_clean: passed")
         else
-          abort %Q{failed: guard_clean: uncomitted changes
+          abort %Q{failed: guard_committed: uncomitted changes
     
     There are files that need to be committed first.
         
