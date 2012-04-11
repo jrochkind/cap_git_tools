@@ -146,7 +146,10 @@ Capistrano::Configuration.instance.load do
         with cap :tag_prefix variable instead.
       * Somewhat experimental, you can also set :tag_format to change the
         part after the prefix.
-      * or you can specify a complete tag on the cap command line `-s tag=deploy-whatever`.          
+      * or you can specify a complete tag on the cap command line `-s tag=deploy-whatever`.  
+      
+      `set :confirm_tag, true` in the config file to force an interactive
+      prompt and confirmation before continuing. 
     DESC
     task :tag do    
       
@@ -157,6 +160,8 @@ Capistrano::Configuration.instance.load do
       tag = calculate_new_tag
       
       commit_msg = @__git_what || "cap git:tag: #{tag}"
+      
+      self.guard_confirm_tag(tag)
       
       # tag 'working_branch', means :branch if set, otherwise
       # current working directory checkout. 
@@ -183,7 +188,7 @@ Capistrano::Configuration.instance.load do
         Or use with the guard tasks:
           before "deploy", "git:guard_committed", "git:guard_upstream", "git:retag"
         
-        `set :confirm_retag, true` in the config file to force an interactive
+        `set :confirm_tag, true` in the config file to force an interactive
         prompt and confirmation before continuing. 
         
         What tag will be used as source tag?
@@ -207,7 +212,7 @@ Capistrano::Configuration.instance.load do
       
       to_tag = calculate_new_tag
       
-      self.guard_confirm_retag(from_tag)
+      self.guard_confirm_tag(from_tag)
       
       say_formatted("git:retag taking #{from_tag} and retagging as #{to_tag}")
       

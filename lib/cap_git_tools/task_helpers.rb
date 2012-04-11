@@ -174,9 +174,9 @@ module CapGitTools::TaskHelpers
       return "#{tag_prefix}-#{tag_suffix}"    
     end
     
-    # will prompt to confirm new tag, if :confirm_retag is true, otherwise
+    # will prompt to confirm new tag, if :confirm_tag is true, otherwise
     # no-op. 
-    def guard_confirm_retag(new_tag)    
+    def guard_confirm_tag(new_tag)    
       if exists?("confirm_retag") && [true, "true"].include?(fetch("confirm_retag"))      
         confirmed = Capistrano::CLI.ui.agree("Do you really want to deploy #{new_tag}?") do |q|
           q.default = "no"
