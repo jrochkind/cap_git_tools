@@ -32,9 +32,27 @@ module CapGitTools::TaskHelpers
       abort("failed: #{cmd}") unless $? == 0
     end
     
-    # Get :upstream_remote with default
+    # How to refer to the upstream git repo configured in cap :repository?
+    # Will _usually_ return 'origin', will sometimes return another remote,
+    # will occasionally return a raw git url when it's not configured in
+    # remotes for some reason. 
+    #
+    # This used to be hard-coded to 'origin'. Then it was configurable.
+    # Then I realized it _has_ to be whatever is set in cap :repository.
+    # We'll look up the remote alias for that, if available, and cache
+    # the lookup. Usually it'll be 'origin',  yeah. 
     def upstream_remote
-      fetch(:upstream_remote, "origin")
+      @__upstream_remote = begin
+        git_url = fetch(:repository)        
+        
+        remote_info = 
+        `git remote -v`.
+          split("\n").
+          collect {|line| line.split(/[\t ]/) }.
+          find {|list| list[1] == git_url }
+        
+        remote_info ? remote_info[0] : git_url
+      end
     end
     
   
