@@ -143,7 +143,8 @@ module CapGitTools::TaskHelpers
       end
       
       say_formatted "Displaying commits from #{from_tag} to #{to_tag}\n\n"
-      local_sh command
+      say_formatted command + "\n\n"
+      system command
       puts "" # newline
     end
       
