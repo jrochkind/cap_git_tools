@@ -179,7 +179,11 @@ module CapGitTools::TaskHelpers
     # no-op. 
     def guard_confirm_tag(new_tag)    
       if exists?("confirm_tag") && [true, "true"].include?( confirm_tag )      
-        confirmed = Capistrano::CLI.ui.agree("Do you really want to deploy #{new_tag}?") do |q|
+        prompt = "Do you really want to deploy "
+        prompt += new_tag
+        prompt += " to #{stage}" if exists? :stage
+        
+        confirmed = Capistrano::CLI.ui.agree(prompt) do |q|
           q.default = "no"
         end
         unless confirmed
