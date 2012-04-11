@@ -146,6 +146,7 @@ Capistrano::Configuration.instance.load do
         with cap :tag_prefix variable instead.
       * Somewhat experimental, you can also set :tag_format to change the
         part after the prefix.
+      * or you can specify a complete tag on the cap command line `-s tag=deploy-whatever`.          
     DESC
     task :tag do    
       
@@ -191,7 +192,7 @@ Capistrano::Configuration.instance.load do
         * Or set cap :tag_prefix in config file or command line
           to use a different prefix.
         * Or set :tag_from in config file or on command line
-          to specify a specific tag.
+          to specify a specific tag. `cap deploy -s tag_from=staging_something`
           
         What will the newly created tag look like? Same rules as for
         git:tag. 
