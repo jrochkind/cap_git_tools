@@ -70,9 +70,9 @@ your git copy is 'clean' as discussed above:
    
 That's a date and timestamp, deploy-yyyy-mm-dd-hhmm.
 
-If you are using multistage, the default prefix will be the current stage name
-like "production" or "staging" (but see below for fancier multi-stage
-workflow). 
+If you are using multistage, instead of "deploy-" as a prefix, it'll use 
+the current stage name like "production" or "staging" (but see below for
+fancier multi-stage workflow). 
 
 Ordinarily what's in your current git checkout will be tagged; but if
 you have set cap's `:branch`, it'll tag and deploy the HEAD of that branch
