@@ -281,8 +281,8 @@ Capistrano::Configuration.instance.load do
       
       if exists?("stage") && stage.to_s == "production"
         # production stage in multi-stage
-        from =  from_tag # last staging-* tag, or last :from_prefix tag
-        to = fetch_last_tag # last deploy-* tag, or last :tag_prefix tag
+        from =  fetch_last_tag # last deploy-* tag, or last :tag_prefix tag
+        to = from_tag # last staging-* tag, or last :from_prefix tag
       else
         # 'staging' stage in multi-stage, or else any old
         # non-multistage. 
