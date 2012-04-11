@@ -79,7 +79,7 @@ In one commonly desired multistage workflow (similar to what
 [gitflow](https://github.com/apinstein/git-deployment) enforces):
  
  * Under staging, you want automatic tagging with staging-yyyy-mm-dd-hhmm, just 
-   as above under 'Automatically tag on deploy'. Add to your config/staging.rb:
+   as above under 'Automatically tag on deploy'. Add to your `config/staging.rb`:
    
            before "deploy", "git:guard_committed", "git:guard_pushed", "git:tag"
       
@@ -87,7 +87,7 @@ In one commonly desired multistage workflow (similar to what
    it by deploying that tag to production, re-tagging with a "production-" tag.
    Maybe you also want to print out the commit log between the last production
    tag and what you're about to deploy, and require interactive confirmation.
-   Add to your config/deploy.rb:
+   Add to your `config/deploy.rb`:
    
            before "deploy",  "git:commit_log", "git:retag"
            set :confirm_tag, true
@@ -139,13 +139,13 @@ Works in single stage recipe or multistage.
 
 ## To Be Done
 
-Tag names are automatically created with a year-month-day-hour-minute timestamp.
+* Tag names are automatically created with a year-month-day-hour-minute timestamp.
 However, if you try to deploy again before the minute's changed on the clock,
 the tasks will try to re-tag using an already used name. You'll get an error and
 the task will abort, but the task could be written to catch this and add a
 suffix. But it ain't yet. 
 
-There is some limited experimental functionality to change the format and add
+* There is some limited experimental functionality to change the format and add
 new components to the automatically created tag name, using a :tag_format
 variable. This theoretically allows the `who` and `what` components used by
 gitflow.  But doing the 'right thing' in multistage (copying the 'what' from the
