@@ -51,11 +51,12 @@ your recipe in deploy.rb:
 
     before "deploy", "git:guard_committed", "git:guard_pushed"
     
-Or use just one or the other -- `guard_committed` makes sure you have no
-uncommitted changes, and makes sure your current working copy branch matches
-the branch Cap is using (if any).   `guard_pushed` makes sure the current working
-copy branch (or local branch matching Cap :branch, if set) matches the upstream
-remote version. 
+Or use just one or the other
+
+* `guard_committed` makes sure you have no uncommitted changes. _IF_ you have a :branch set
+   in your cap recipe, it will also make sure your curent checkout matches that branch. 
+* `guard_pushed` makes sure the current working copy branch (or local branch matching Cap
+  :branch, if set) matches the upstream remote version. 
  
 ## Automatically tag on deploy
 
