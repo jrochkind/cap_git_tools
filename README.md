@@ -34,7 +34,12 @@ Add to top of a relevant Capistrano file (such as config/deploy.rb ordinarily):
     require 'cap_git_tools/tasks'
     
 This makes cap_git_tool's tasks available to you, but doesn't automatically wire
-them up to be used by your `cap deploy`. See below. 
+them up to be used by your `cap deploy`. See below.
+
+You probably want to make sure you have an `ssh-agent` set up, or you'll have to
+enter your private key password to access git several times. You will need to be
+running your cap recipes from a directory with a git checkout (usual behavior
+for cap usage, but not actually required otherwise by cap). 
 
 ## Ensure git is committed and pushed when deploying
 
@@ -69,8 +74,8 @@ like "production" or "staging" (but see below for fancier multi-stage
 workflow). 
 
 Ordinarily what's in your current git checkout will be tagged; but if
-you have set cap's `:branch`, it'll tag the HEAD of that branch even if that's
-not your current checkout. 
+you have set cap's `:branch`, it'll tag and deploy the HEAD of that branch
+even if that's not your current checkout. 
 
 You can customize the prefix and other aspects of tagging, both in your recipe 
 and with command line over-rides, see `cap -E git:tag` for more info. 
