@@ -122,19 +122,31 @@ Capistrano::Configuration.instance.load do
     desc <<-DESC
       Tags the current checkout and pushes tag to remote.
       
-      * tag will be prefix-timestamp
-        * if using multi-stage or otherwise setting :stage, prefix defaults
-          to :stage   
-        * otherwise prefix defaults to 'deploy'
-        * or set explicitly with :tag_prefix
-     
-       sets :branch to the new tag, so subsequent cap deploy tasks will use it
-     
-       pushes new tag to 'origin' or cap :upstream_remote
-       
-       You may want to use this with git:guard_committed and/or git:guard_upstream
-       to be sure you're deploying what you're looking at:
-       before "git:tag", "git:guard_committed", "git:guard_upstream"
+      Normally will tag and deploy whatever is in your current git working
+      copy -- you may want to use with the guard tasks to make sure
+      you're deploying what you think and sync'ing it to your upstream
+      repository:
+      
+        before "deploy", "git:guard_committed", "git:guard_upstream", "git:tag"
+        
+      However, if you have set cap :branch, git:retag will tag the HEAD
+      of THAT branch, rather than whatever is the current working copy
+      branch. 
+      
+      Either way, git:tag:
+      * pushes the new tag to upstream remote git
+      * sets the cap :branch variable to the newly created tag, to be 
+        sure cap deploys that tag. 
+      
+      What will the created tag look like?
+      
+      Without multi-stage, by default something like `deploy-yyyy-mm-dd-hhmm`. 
+      
+      * The deploy- prefix will be the current stage name if multi-stage.
+      * The prefix can be manually set in config file or command line
+        with cap :tag_prefix variable instead.
+      * Somewhat experimental, you can also set :tag_format to change the
+        part after the prefix.
     DESC
     task :tag do    
       
@@ -163,9 +175,15 @@ Capistrano::Configuration.instance.load do
         Will push the new tag to upstream repo, and set the new tag as cap 
         :branch so cap willd deploy it.  
     
-        Usually used in git multistage for moving from staging to production.
+        Usually used in git multistage for moving from staging to production, 
+        for instance in your production.rb:
         
-        `set :confirm_retag, true` in a config file to force an interactive
+          before "deploy", "git:retag" 
+        
+        Or use with the guard tasks:
+          before "deploy", "git:guard_committed", "git:guard_upstream", "git:retag"
+        
+        `set :confirm_retag, true` in the config file to force an interactive
         prompt and confirmation before continuing. 
         
         What tag will be used as source tag?
