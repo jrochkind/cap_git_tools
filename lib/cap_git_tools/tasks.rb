@@ -76,7 +76,7 @@ Capistrano::Configuration.instance.load do
     desc <<-DESC
       Ensure sure local git has been pushed to upstream, or abort
      
-      * Assumes upstream remote is 'origin', or set :upstream_remote
+      * 'upstream' is whatever you have configured as cap :repository
       * Looks in :branch (default 'master') to see what branch should be checked,
         Assumes local :branch tracks upstream_remote/branch
         
