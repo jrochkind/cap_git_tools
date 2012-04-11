@@ -122,7 +122,7 @@ a recipe:
    
 Or set/over-ridden on the individual cap command line invocation:
 
-   cap deploy -s variable=value
+    cap deploy -s variable=value
    
 Doesn't matter if you use cap '-s' or '-S', cap_git_tools tasks always lazily
 look up these values. 
