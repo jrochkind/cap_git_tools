@@ -144,7 +144,7 @@ Capistrano::Configuration.instance.load do
       * The deploy- prefix will be the current stage name if multi-stage.
       * The prefix can be manually set in config file or command line
         with cap :tag_prefix variable instead.
-      * Somewhat experimental, you can also set :tag_format to change the
+      * Somewhat experimental, you can also set :tag_template to change the
         part after the prefix.
       * or you can specify a complete tag on the cap command line `-s tag=deploy-whatever`.  
       
@@ -205,7 +205,7 @@ Capistrano::Configuration.instance.load do
         * By default in a production stage it's going to look 
         like `production-yyyy-mm-dd-hhmm`, but there are several
         of cap variables you can set in a config file to change this,
-        including :tag_prefix and :tag_format.         
+        including :tag_prefix and :tag_template         
     DESC
     task :retag do
       from_tag = self.from_tag

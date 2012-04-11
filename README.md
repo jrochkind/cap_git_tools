@@ -155,7 +155,8 @@ the task will abort, but the task could be written to catch this and add a
 suffix. But it ain't yet. 
 
 * There is some limited experimental functionality to change the format and add
-new components to the automatically created tag name, using a :tag_format
+new components to the automatically created tag name, using a
+[:tag_template](https://github.com/jrochkind/cap_git_tools/blob/master/lib/cap_git_tools/task_helpers.rb#L162)
 variable. This theoretically allows the `who` and `what` components used by
 gitflow.  But doing the 'right thing' in multistage (copying the 'what' from the
 previous tag, but regenerating the rest) is a bit tricky, and hasn't been done
