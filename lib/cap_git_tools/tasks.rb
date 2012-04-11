@@ -202,16 +202,24 @@ Capistrano::Configuration.instance.load do
     end
     
     desc <<-DESC
-      Show 5 most recent tags, oldest first 
+      Show 5 most recent tags set by git:tag or git:retag
+      
+      Can be used to see what you've deployed recently. 
+      
+         cap git:show_tags
+       or for multi-stage:
+         cap staging git:show_tags
+         cap production git:show_tags
+      
+      Looks for tags matching the prefix that the tag or retag task
+      would use to tag. Ie, 'deploy-', or 'stagename-' in multi-stage,
+      or according to :tag_prefix setting. 
      
-      matching tag_prefix pattern, with some git info about those tags. 
-    
-      tag_prefix defaults to cap :stage, or "deploy-", or set in cap :tag_prefix
-     
-      in newer versions of git you could prob do this with a git-log instead with
-      certain arguments, but my version doesn't support --tags arg properly yet. 
+      Will also output date of tag, commit message, and account doing the commit.            
     DESC
-    task :show_tags do    
+    task :show_tags do               
+      # in newer versions of git you could prob do this with a git-log instead with
+      # certain arguments, but my local git is too old to support --tags arg properly.
       system "git for-each-ref --count=4 --sort='-taggerdate' --format='\n* %(refname:short)\n    Tagger: %(taggeremail)\n    Date: %(taggerdate)\n\n    %(subject)' 'refs/tags/#{tag_prefix}-*' "
     end
     
