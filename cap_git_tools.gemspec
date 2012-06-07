@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = CapGitTools::VERSION
   s.authors     = ["Jonathan Rochkind"]
   s.email       = ["jonathan@dnil.net"]
-  s.homepage    = ""
+  s.homepage    = "http://github.com/jrochkind/cap_git_tools"
   s.summary     = %q{re-usable, composable Capistrano tasks for git tagging and other work with a git repo}
 
   s.rubyforge_project = "cap_git_tools"
