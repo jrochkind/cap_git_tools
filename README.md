@@ -49,7 +49,7 @@ push your changes to git?  I have.
 Have cap make sure you're committed and pushed before deploying by adding to
 your recipe in deploy.rb: 
 
-    before "deploy", "git:guard_committed", "git:guard_pushed"
+    before "deploy:update_code", "git:guard_committed", "git:guard_pushed"
     
 Or use just one or the other
 
@@ -66,7 +66,7 @@ gets deployed, with a tag like "deploy-2012-04-11-1517"?
 Add this to your Cap recipe, usefully combining with the tasks to make sure
 your git copy is 'clean' as discussed above:
 
-    before "deploy", "git:guard_committed", "git:guard_pushed", "git:tag"
+    before "deploy:update_code", "git:guard_committed", "git:guard_pushed", "git:tag"
    
 That's a date and timestamp, deploy-yyyy-mm-dd-hhmm.
 
