@@ -79,7 +79,7 @@ you have set cap's `:branch`, it'll tag and deploy the HEAD of that branch
 even if that's not your current checkout. 
 
 You can customize the prefix and other aspects of tagging, both in your recipe 
-and with command line over-rides, see `cap -E git:tag` for more info. 
+and with command line over-rides, see `cap -e git:tag` for more info. 
 
 ## Multistage workflow
 
