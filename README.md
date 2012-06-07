@@ -91,7 +91,7 @@ In one commonly desired multistage workflow (similar to what
  * Under staging, you want automatic tagging with staging-yyyy-mm-dd-hhmm, just 
    as above under 'Automatically tag on deploy'. Add to your `config/staging.rb`:
    
-           before "deploy", "git:guard_committed", "git:guard_pushed", "git:tag"
+           before "deploy:update_code", "git:guard_committed", "git:guard_upstream", "git:tag"
       
  * Under production, you want to take the most recent 'staging' tag, and promote
    it by deploying that tag to production, re-tagging with a "production-" tag.
@@ -99,7 +99,7 @@ In one commonly desired multistage workflow (similar to what
    tag and what you're about to deploy, and require interactive confirmation.
    Add to your `config/deploy.rb`:
    
-           before "deploy",  "git:commit_log", "git:retag"
+           before "deploy:update_code",  "git:commit_log", "git:retag"
            set :confirm_tag, true
        
 Say you `cap staging deploy` on April 1 2012 at noon, your deploy will be
