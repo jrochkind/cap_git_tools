@@ -18,7 +18,7 @@ to be using it.
 (_Inspired by Alan Pinstein and Josh Nichols' neat
 [gitflow](https://github.com/apinstein/git-deployment), but refactored for more
 flexiblity with less hardcoded workflow. Some functionality changed in the
-process.)_
+process.)
 
 ## Installation
 
@@ -35,6 +35,12 @@ Add to top of a relevant Capistrano file (such as config/deploy.rb ordinarily):
     
 This makes cap_git_tool's tasks available to you, but doesn't automatically wire
 them up to be used by your `cap deploy`. See below.
+
+**Note** Cap git tools requires you to be executing cap from a directory that is
+a git checkout. Much cap use is doing this already (it's pretty universal using
+cap for Rails), but it's not technically required by Cap.  All other cap-git
+integration solutions I know of also require this, a local git checkout is
+really the only workable way to do this I know of. 
 
 You probably want to make sure you have an `ssh-agent` set up, or you'll have to
 enter your private key password to access git several times. You will need to be
