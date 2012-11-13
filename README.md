@@ -37,7 +37,9 @@ This makes cap_git_tool's tasks available to you, but doesn't automatically wire
 them up to be used by your `cap deploy`. See below.
 
 You probably want to make sure you have an `ssh-agent` set up, or you'll have to
-enter your private key password to access git several times. **Note**: You will need to be
+enter your private key password to access git several times. 
+
+**Note**: You will need to be
 running your cap recipes from a directory with a git checkout (usual behavior
 for cap usage, but not actually required otherwise by cap). 
 
