@@ -196,8 +196,8 @@ Capistrano::Configuration.instance.load do
         * Normally the most recent tag beginning "staging-"
         * Or set cap :tag_prefix in config file or command line
           to use a different prefix.
-        * Or set :tag_from in config file or on command line
-          to specify a specific tag. `cap deploy -s tag_from=staging_something`
+        * Or set :from_tag in config file or on command line
+          to specify a specific tag. `cap deploy -s from_tag=staging_something`
           
         What will the newly created tag look like? Same rules as for
         git:tag. 
