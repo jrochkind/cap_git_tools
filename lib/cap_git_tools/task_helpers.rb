@@ -43,18 +43,17 @@ module CapGitTools::TaskHelpers
     # the lookup. Usually it'll be 'origin',  yeah. 
     def upstream_remote
       @__upstream_remote = begin
-        git_url = fetch(:repository)        
-        
-        remote_info = 
-        `git remote -v`.
-          split("\n").
-          collect {|line| line.split(/[\t ]/) }.
-          find {|list| list[1] == git_url }
-        
-        remote_info ? remote_info[0] : git_url
+        if exists?('upstream_remote_name')
+          fetch(:upstream_remote_name)
+        elsif fetch(:deploy_via) == :copy
+          upstream_remote_for_copy
+        else
+          git_url = fetch(:repository)        
+          upstream_remote_by_url git_url
+        end
       end
     end
-    
+
   
     # what branch we're going to tag and deploy -- if cap 'branch' is set,
     # use that one, otherwise use current branch in checkout
@@ -189,6 +188,28 @@ module CapGitTools::TaskHelpers
         end
       end
     end
+
+    def upstream_remote_by_url(url)
+      remote_info = 
+        `git remote -v`.
+        split("\n").
+        collect {|line| line.split(/[\t ]/) }.
+        find {|list| list[1] == git_url }
+
+      remote_info ? remote_info[0] : git_url
+    end
     
-  
+    def upstream_remote_for_copy
+      remotes = `git remote`.split("\n")
+      remotes.size == 1 ? remotes[0] : abort(%Q{failed: upstream_remote: multiple possible upstream remotes
+
+    You are deploying via copy, and have multiple possible upstream remotes.
+
+    Please specify the correct remote to use by setting the 
+    :upstream_remote_name variable.
+
+    Available remotes:
+      #{remotes.join("\n      ")}
+      })
+    end
 end
