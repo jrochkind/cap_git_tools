@@ -37,10 +37,13 @@ module CapGitTools::TaskHelpers
     # will occasionally return a raw git url when it's not configured in
     # remotes for some reason. 
     #
-    # This used to be hard-coded to 'origin'. Then it was configurable.
-    # Then I realized it _has_ to be whatever is set in cap :repository.
-    # We'll look up the remote alias for that, if available, and cache
-    # the lookup. Usually it'll be 'origin',  yeah. 
+    # When using deploy_via copy, will find the remote if the repository only 
+    # has one configured. If more than one remote is configured an error will 
+    # be raised unless the `upstream_remote_name` variable is set specifying the 
+    # correct remote.
+    #
+    # Remote determination can be overridden manually for any deployment method 
+    # by setting the remote to use in the `upstream_remote_name` variable.
     def upstream_remote
       @__upstream_remote = begin
         if exists?('upstream_remote_name')
