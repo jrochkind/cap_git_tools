@@ -63,13 +63,20 @@ module CapGitTools::TaskHelpers
     def working_branch
       @__git_working_branch ||= begin
         if exists?("branch")
+          p fetch(:branch)
           fetch(:branch)
         else
-          b = `git symbolic-ref -q HEAD`.sub(%r{^refs/heads/}, '').chomp
-          b.empty? ? "HEAD" : b
+          current_branch
         end
       end
       
+    end
+
+    # The branch that is currently checkout out in the local repository
+    def current_branch
+      b = `git symbolic-ref -q HEAD`.sub(%r{^refs/heads/}, '').chomp
+      b.empty? ? "HEAD" : b
+      return b
     end
     
     # current SHA fingerprint of local branch mentioned in :branch
