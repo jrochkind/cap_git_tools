@@ -1,5 +1,7 @@
 # cap_git_tools
 
+[![Gem Version](https://badge.fury.io/rb/cap_git_tools.png)](http://badge.fury.io/rb/cap_git_tools)
+
 Re-usable, composable [Capistrano](https://github.com/capistrano/capistrano) tasks for git tagging and other work with the
 git repository you use for your Cap deploys. 
 
