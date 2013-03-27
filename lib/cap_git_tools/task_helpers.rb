@@ -199,7 +199,7 @@ module CapGitTools::TaskHelpers
       end
     end
 
-    def upstream_remote_by_url(url)
+    def upstream_remote_by_url(git_url)
       remote_info = 
         `git remote -v`.
         split("\n").
