@@ -70,7 +70,7 @@ gets deployed, with a tag like "deploy-2012-04-11-1517"?
 Add this to your Cap recipe, usefully combining with the tasks to make sure
 your git copy is 'clean' as discussed above:
 
-    before "deploy:update_code", "git:guard_committed", "git:guard_pushed", "git:tag"
+    before "deploy:update_code", "git:guard_committed", "git:guard_upstream", "git:tag"
    
 That's a date and timestamp, deploy-yyyy-mm-dd-hhmm.
 
